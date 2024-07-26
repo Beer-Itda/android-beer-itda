@@ -17,7 +17,7 @@ class VersionManager @Inject constructor(
 
     val version: String
         get() = try {
-            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName.orEmpty()
         } catch (e: Exception) {
             L.e(e)
             ""

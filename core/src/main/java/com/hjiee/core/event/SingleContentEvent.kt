@@ -43,18 +43,3 @@ open class SingleContentEvent<out T>(private val content: T) {
      */
     fun peekContent(): T = content
 }
-
-/**
- * An [Observer] for [SingleContentEvent]s, simplifying the pattern of checking if the [SingleContentEvent]'s content has
- * already been handled.
- *
- * [onEventUnhandledContent] is *only* called if the [SingleContentEvent]'s contents has not been handled.
- */
-class EventObserver<T>(private val onEventUnhandledContent: (T) -> Unit) :
-    Observer<SingleContentEvent<T>> {
-    override fun onChanged(singleContentEvent: SingleContentEvent<T>?) {
-        singleContentEvent?.getContentIfNotHandled()?.let {
-            onEventUnhandledContent(it)
-        }
-    }
-}

@@ -5,7 +5,6 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("dagger.hilt.android.plugin")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
@@ -15,7 +14,7 @@ android {
 
     defaultConfig {
         minSdk = AndroidConfig.MIN_SDK_VERSION
-        targetSdk = AndroidConfig.TARGET_SDK_VERSION
+        testOptions.targetSdk = AndroidConfig.TARGET_SDK_VERSION
 
         manifestPlaceholders[KAKAO] = getKakaoKey()
 
@@ -57,6 +56,7 @@ android {
     kotlinOptions {
         jvmTarget = AndroidConfig.JAVA_VERSION.toString()
     }
+    namespace = "com.hjiee.presentation"
 }
 
 dependencies {
@@ -95,14 +95,14 @@ dependencies {
     implementation(Libs.TIMBER)
     implementation(Libs.HILT)
     kapt(Libs.HILT_ANNOTATION)
-    implementation(Libs.HILT_VIEWMODEL)
+//    implementation(Libs.HILT_VIEWMODEL)
     kapt(Libs.HILT_COMPILER)
     implementation(Libs.KAKAO)
     implementation(Libs.RANGE_SEEK_BAR)
 
     implementation(Libs.LICENSES)
 
-    implementation(Libs.SNAP_RECYCLERVIEW)
+//    implementation(Libs.SNAP_RECYCLERVIEW)
     implementation(Libs.LOTTIE)
 
     testImplementation(TestLibs.JUNIT)

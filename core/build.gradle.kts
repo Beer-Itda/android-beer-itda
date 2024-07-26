@@ -44,6 +44,7 @@ android {
     buildFeatures {
         dataBinding = true
     }
+    namespace = "com.hjiee.core"
     hilt {
         enableAggregatingTask = ENABLE_AGGREGATING_TASK
     }
@@ -58,7 +59,7 @@ dependencies {
     implementation(Libs.TIMBER)
     implementation(Libs.HILT)
     kapt(Libs.HILT_ANNOTATION)
-    implementation(Libs.HILT_VIEWMODEL)
+//    implementation(Libs.HILT_VIEWMODEL)
     kapt(Libs.HILT_COMPILER)
 
     implementation(platform(Libs.FIREBASE))

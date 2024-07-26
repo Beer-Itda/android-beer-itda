@@ -9,7 +9,7 @@ class BeerDetailStringProvider @Inject constructor(
     private val context: Context
 ) : IStringResourceProvider {
 
-    fun getError(): String = getStringRes(R.string.error_message)
+    fun getError(): String = getStringRes(com.hjiee.core.R.string.error_message)
     fun getDeleteMessage(): String = getStringRes(R.string.success_deleted_review)
 
 

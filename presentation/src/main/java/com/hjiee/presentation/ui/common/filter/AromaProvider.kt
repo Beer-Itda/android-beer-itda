@@ -44,7 +44,7 @@ class AromaProvider @Inject constructor(
         value: List<AromaItemViewModel>?
     ) {
         preference.setValue(KEY_EXTRA_FILTER_AROMA, Gson().toJson(value))
-        channel.offer(value)
+        channel.trySend(value)
     }
 
     override fun getValue(

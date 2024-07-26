@@ -1,6 +1,6 @@
 package com.hjiee.core.util.log
 
-import com.hjiee.core.BuildConfig
+import com.google.firebase.ktx.BuildConfig
 import com.hjiee.core.util.log.timber.CrashlyticsTree
 import timber.log.Timber
 

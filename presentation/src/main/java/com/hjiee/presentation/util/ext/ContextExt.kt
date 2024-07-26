@@ -57,7 +57,7 @@ fun Context.showToast(message: String, duration: Int? = null) {
 }
 
 fun Context.showSimpleDialog(
-    title: String? = getString(R.string.app_name),
+    title: String? = getString(com.jaygoo.widget.R.string.app_name),
     message: String,
     result: (() -> Unit)? = null
 ) {

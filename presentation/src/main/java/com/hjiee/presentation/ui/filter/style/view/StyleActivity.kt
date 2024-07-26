@@ -20,13 +20,11 @@ import com.hjiee.presentation.util.ext.showToast
 import com.google.android.material.tabs.TabLayout
 import com.hjiee.core.event.entity.ActionEntity
 import com.hjiee.core.event.entity.ItemClickEntity
-import com.yarolegovich.discretescrollview.DiscreteScrollView
-import com.yarolegovich.discretescrollview.transform.ScaleTransformer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class StyleActivity : BaseActivity<ActivityFilterStyleBinding>(R.layout.activity_filter_style),
-    DiscreteScrollView.OnItemChangedListener<StyleMiddleItemViewHolder>,
+//    DiscreteScrollView.OnItemChangedListener<StyleMiddleItemViewHolder>,
     TabLayout.OnTabSelectedListener {
 
     private var isFirstStart = true
@@ -45,18 +43,18 @@ class StyleActivity : BaseActivity<ActivityFilterStyleBinding>(R.layout.activity
     override fun initBind() {
         binding.apply {
             viewModel = this@StyleActivity.viewModel
-            with(rvFilterMiddleCategory) {
-                adapter = middleCategoryListAdapter
-                lifecycleOwner = this@StyleActivity
-                addOnItemChangedListener(this@StyleActivity)
-                setItemTransformer(
-                    ScaleTransformer.Builder()
-                        .setMinScale(0.7f)
-                        .build()
-                )
-                setOffscreenItems(3)
-                scrollToPosition(0)
-            }
+//            with(rvFilterMiddleCategory) {
+//                adapter = middleCategoryListAdapter
+//                lifecycleOwner = this@StyleActivity
+//                addOnItemChangedListener(this@StyleActivity)
+//                setItemTransformer(
+//                    ScaleTransformer.Builder()
+//                        .setMinScale(0.7f)
+//                        .build()
+//                )
+//                setOffscreenItems(3)
+//                scrollToPosition(0)
+//            }
             with(rvFilterStyleSmall) {
                 adapter = smallCategoryListAdapter
                 lifecycleOwner = this@StyleActivity
@@ -100,9 +98,9 @@ class StyleActivity : BaseActivity<ActivityFilterStyleBinding>(R.layout.activity
             is StyleActionEntity.UpdateMiddle -> {
                 middleCategoryListAdapter.clear()
                 middleCategoryListAdapter.addAll(entity.style, true)
-                binding.rvFilterMiddleCategory.run {
-                    post { scrollToPosition(0) }
-                }
+//                binding.rvFilterMiddleCategory.run {
+//                    post { scrollToPosition(0) }
+//                }
             }
             is StyleActionEntity.UpdateSmall -> {
                 smallCategoryListAdapter.clear()
@@ -146,15 +144,15 @@ class StyleActivity : BaseActivity<ActivityFilterStyleBinding>(R.layout.activity
         }
     }
 
-    override fun onCurrentItemChanged(
-        viewHolder: StyleMiddleItemViewHolder?,
-        adapterPosition: Int
-    ) {
-        if (!isFirstStart) {
-            viewModel.selectMiddleCategory(adapterPosition)
-        }
-        isFirstStart = false
-    }
+//    override fun onCurrentItemChanged(
+//        viewHolder: StyleMiddleItemViewHolder?,
+//        adapterPosition: Int
+//    ) {
+//        if (!isFirstStart) {
+//            viewModel.selectMiddleCategory(adapterPosition)
+//        }
+//        isFirstStart = false
+//    }
 
     companion object {
         const val REQ_CODE_FILTER = 30

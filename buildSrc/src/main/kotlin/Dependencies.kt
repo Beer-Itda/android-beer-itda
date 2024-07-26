@@ -53,8 +53,8 @@ object Libs {
         "com.google.android.gms:play-services-oss-licenses:${Versions.OSS_LICENSES}"
 
     //
-    const val SNAP_RECYCLERVIEW =
-        "com.yarolegovich:discrete-scrollview:${Versions.SNAP_RECYCLERVIEW}"
+//    const val SNAP_RECYCLERVIEW =
+//        "com.yarolegovich:discrete-scrollview:${Versions.SNAP_RECYCLERVIEW}"
     const val LOTTIE = "com.airbnb.android:lottie:${Versions.LOTTIE}"
 
 }

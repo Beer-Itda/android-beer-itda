@@ -2,7 +2,7 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -19,7 +19,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { setUrl("https://devrepo.kakao.com/nexus/content/groups/public/") }
         maven { setUrl("https://jitpack.io") }
     }

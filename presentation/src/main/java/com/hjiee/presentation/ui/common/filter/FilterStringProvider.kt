@@ -31,7 +31,7 @@ class FilterStringProvider @Inject constructor(
         }
     }
 
-    fun getErrorMessage() = getStringRes(R.string.error_message)
+    fun getErrorMessage() = getStringRes(com.hjiee.core.R.string.error_message)
 
     override fun getStringRes(resId: Int): String {
         return context.getString(resId)

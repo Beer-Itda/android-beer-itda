@@ -44,6 +44,7 @@ android {
             dimension = "mode"
         }
     }
+    namespace = "com.hjiee.domain"
     hilt {
         enableAggregatingTask = ENABLE_AGGREGATING_TASK
     }
@@ -57,7 +58,7 @@ dependencies {
     implementation(Libs.GSON)
     implementation(Libs.HILT)
     kapt(Libs.HILT_ANNOTATION)
-    implementation(Libs.HILT_VIEWMODEL)
+//    implementation(Libs.HILT_VIEWMODEL)
     kapt(Libs.HILT_COMPILER)
 
 //    implementation("androidx.core:core-ktx:1.3.2")

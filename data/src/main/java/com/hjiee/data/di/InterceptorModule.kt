@@ -1,9 +1,9 @@
 package com.hjiee.data.di
 
-import com.hjiee.core.BuildConfig
 import com.hjiee.core.manager.VersionManager
 import com.hjiee.core.provider.SharedPreferenceProvider
 import com.hjiee.data.authentication.AuthenticationInterceptor
+import com.kakao.sdk.auth.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

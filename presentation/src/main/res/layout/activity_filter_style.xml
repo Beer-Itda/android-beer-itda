@@ -117,19 +117,19 @@
                     android:paddingTop="16dp"
                     app:layout_scrollFlags="scroll">
 
-                    <com.yarolegovich.discretescrollview.DiscreteScrollView
-                        android:id="@+id/rv_filter_middle_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        android:paddingVertical="10dp"
-                        app:dsv_orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/item_filter_style_middle" />
+<!--                    <com.yarolegovich.discretescrollview.DiscreteScrollView-->
+<!--                        android:id="@+id/rv_filter_middle_category"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:clipToPadding="false"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:overScrollMode="never"-->
+<!--                        android:paddingVertical="10dp"-->
+<!--                        app:dsv_orientation="horizontal"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        tools:listitem="@layout/item_filter_style_middle" />-->
 
                     <TextView
                         android:id="@+id/tv_beer_description"

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.hjiee.presentation">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application>
         <activity
             android:name="com.hjiee.presentation.ui.splash.view.SplashActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -13,7 +13,6 @@ import com.hjiee.presentation.ui.webview.CustomWebViewClient
 import com.hjiee.presentation.ui.webview.model.WebViewActionEntity
 import com.hjiee.core.event.ActionEventNotifier
 import com.hjiee.core.event.entity.ActionEntity
-import kotlinx.android.synthetic.main.activity_webview.*
 
 
 class WebViewActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity_webview),
@@ -49,7 +48,7 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity_w
     override fun onBackPressed() {
         when (binding.webview.canGoBack()) {
             true -> {
-                webview.goBack()
+                binding.webview.goBack()
             }
             false -> {
                 finish()

@@ -43,7 +43,7 @@ class StyleProvider @Inject constructor(
         value: List<StyleSmallItemViewModel>?
     ) {
         preference.setValue(KEY_EXTRA_FILTER_STYLE, Gson().toJson(value))
-        channel.offer(value)
+        channel.trySend(value)
     }
 
     override fun getValue(thisRef: Any, property: KProperty<*>): List<StyleSmallItemViewModel> {

@@ -1,8 +1,8 @@
 package com.hjiee.core.util.log
 
 import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.BuildConfig
 import com.google.firebase.ktx.Firebase
-import com.hjiee.core.BuildConfig
 
 object CrashlyticsLog {
 

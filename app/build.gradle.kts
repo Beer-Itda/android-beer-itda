@@ -14,7 +14,6 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("dagger.hilt.android.plugin")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.android.gms.oss-licenses-plugin")
@@ -90,10 +89,8 @@ android {
             multiDexEnabled = true
         }
     }
+    namespace = "com.ddd4.synesthesia.beer"
 
-    androidExtensions {
-        isExperimental = true
-    }
     hilt {
         enableAggregatingTask = ENABLE_AGGREGATING_TASK
     }
@@ -110,7 +107,7 @@ dependencies {
     implementation(Libs.TIMBER)
     implementation(Libs.HILT)
     kapt(Libs.HILT_ANNOTATION)
-    implementation(Libs.HILT_VIEWMODEL)
+//    implementation(Libs.HILT_VIEWMODEL)
     kapt(Libs.HILT_COMPILER)
 
     implementation(Libs.KAKAO)

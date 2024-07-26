@@ -32,7 +32,7 @@ class SortImpl(val preference: SharedPreferenceProvider, context: Context) : Sor
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: SortType) {
         preference.setValue(key, value.toString())
-        channel.offer(value)
+        channel.trySend(value)
     }
 
     override fun getValue(thisRef: Any, property: KProperty<*>): SortType = getDefaultValue()

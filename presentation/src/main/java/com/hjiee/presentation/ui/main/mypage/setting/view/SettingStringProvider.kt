@@ -9,7 +9,7 @@ class SettingStringProvider @Inject constructor(
     private val context: Context
 ) : IStringResourceProvider {
 
-    fun getError() = getStringRes(R.string.error_message)
+    fun getError() = getStringRes(com.hjiee.core.R.string.error_message)
 
     val selectedTheme get() = context.resources.getStringArray(R.array.theme_list)
 

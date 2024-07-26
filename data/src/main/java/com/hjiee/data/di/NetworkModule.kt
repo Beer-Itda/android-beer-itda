@@ -56,7 +56,7 @@ object NetworkModule {
         @Named(PROVIDE_NAME_OKHTTP) okHttp: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(stringProvider.getStringRes(R.string.base_url))
+            .baseUrl(stringProvider.getStringRes(com.hjiee.domain.R.string.base_url))
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttp)
             .build()

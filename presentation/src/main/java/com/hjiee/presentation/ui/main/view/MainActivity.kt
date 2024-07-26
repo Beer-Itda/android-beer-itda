@@ -40,7 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 }
                 R.id.nav_search,
                 R.id.nav_mypage -> {
-                    binding.navBottomView.selectedItemId = graph.startDestination
+                    binding.navBottomView.selectedItemId = graph.startDestinationId
                 }
                 else -> {
                     // do nothing

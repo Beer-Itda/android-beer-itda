@@ -158,7 +158,7 @@ class SettingActivity :
         start<WebViewActivity>(
             WebViewActivity.getIntent(
                 context = this,
-                url = preference.getPreferenceString(getString(R.string.terms_of_use))
+                url = preference.getPreferenceString(getString(com.hjiee.core.R.string.terms_of_use))
             )
         )
     }
@@ -170,7 +170,7 @@ class SettingActivity :
         start<WebViewActivity>(
             WebViewActivity.getIntent(
                 context = this,
-                url = preference.getPreferenceString(getString(R.string.privacy_policy))
+                url = preference.getPreferenceString(getString(com.hjiee.core.R.string.privacy_policy))
             )
         )
     }
@@ -182,7 +182,7 @@ class SettingActivity :
         start<WebViewActivity>(
             WebViewActivity.getIntent(
                 context = this,
-                url = preference.getPreferenceString(getString(R.string.notice))
+                url = preference.getPreferenceString(getString(com.hjiee.core.R.string.notice))
             )
         )
     }
@@ -205,7 +205,7 @@ class SettingActivity :
         start<WebViewActivity>(
             WebViewActivity.getIntent(
                 context = this,
-                url = preference.getPreferenceString(getString(R.string.release_note))
+                url = preference.getPreferenceString(getString(com.hjiee.core.R.string.release_note))
             )
         )
     }

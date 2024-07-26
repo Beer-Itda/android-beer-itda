@@ -44,8 +44,4 @@ fun Boolean?.toggle(): Boolean = this?.not() ?: false
 /**
  * string
  */
-fun String?.orDefault(default: String): String = if (this.isNullOrEmpty()) {
-    default
-} else {
-    this
-}
+fun String?.orDefault(default: String): String = this ?: default

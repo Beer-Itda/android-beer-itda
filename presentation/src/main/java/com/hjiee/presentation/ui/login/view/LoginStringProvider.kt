@@ -19,8 +19,8 @@ class LoginStringProvider @Inject constructor(
                 HtmlCompat.fromHtml(
                     String.format(
                         getStringRes(R.string.login_notice),
-                        preference.getPreferenceString(getStringRes(R.string.terms_of_use)),
-                        preference.getPreferenceString(getStringRes(R.string.privacy_policy))
+                        preference.getPreferenceString(getStringRes(com.hjiee.core.R.string.terms_of_use)),
+                        preference.getPreferenceString(getStringRes(com.hjiee.core.R.string.privacy_policy))
                     ),
                     HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
