@@ -11,31 +11,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      - uses: actions/checkout@v4
+        name: set up JDK 17
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Create secure.properties
-      run: echo "${{ secrets.SECURE_PROPERTIES }}" | base64 --decode > secure.properties
-    
-    - name: Create keystore.properties
-      run: echo "${{ secrets.DEV_KEYSTORE_PROPERTIES }}" | base64 --decode > keystore.properties
-      
-    - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 app/dev_ksystore.jks로 저장한다. (생략 가능)
-      run: echo "${{ secrets.DEV_KEYSTORE }}" | base64 --decode > ddd_beer_dev.keystore
-          
-    - name: Create google-services.json # 환경변수(GOOGLE_SERVICES_JSON) 값의 내용을 기반으로 `app/google-services.json`를 만든다.
-      run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-        
-    - name: Build with Gradle
-      run: ./gradlew clean build
+      - name: Create secure.properties
+        run: echo "${{ secrets.SECURE_PROPERTIES }}" | base64 --decode > secure.properties
 
-   # - name: Build debug # APK를 빌드한다. (디버그용)
-   #   run: ./gradlew assembleDebug
+      - name: Create keystore.properties
+        run: echo "${{ secrets.DEV_KEYSTORE_PROPERTIES }}" | base64 --decode > keystore.properties
+
+      - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 app/dev_ksystore.jks로 저장한다. (생략 가능)
+        run: echo "${{ secrets.DEV_KEYSTORE }}" | base64 --decode > ddd_beer_dev.keystore
+
+      - name: Create google-services.json # 환경변수(GOOGLE_SERVICES_JSON) 값의 내용을 기반으로 `app/google-services.json`를 만든다.
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: workflow,job,commit,repo,ref,author,took
+          custom_payload: |
+            {
+              attachments: [{
+                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always() # Pick up events even if the job fails or is canceled.
