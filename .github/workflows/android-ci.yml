@@ -26,7 +26,7 @@ jobs:
       run: echo "${{ secrets.SECURE_PROPERTIES }}" | base64 --decode > secure.properties
     
     - name: Create keystore.properties
-      run: echo "${{ secrets.DEV_KEYSTORE_PROPERTIES }}" | base64 --decode > secure.properties
+      run: echo "${{ secrets.DEV_KEYSTORE_PROPERTIES }}" | base64 --decode > keystore.properties
       
     - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 app/dev_ksystore.jks로 저장한다. (생략 가능)
       run: echo "${{ secrets.DEV_KEYSTORE }}" | base64 --decode > ddd_beer_dev.keystore
