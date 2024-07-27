@@ -8,13 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-    env:
-      SECURE_PROPERTIES: ${{ secrets.SECURE_PROPERTIES }} # scerets에서 로컬 프로퍼티 값 변수(LOCAL_PROPERTIES_CONTENTS)로 설정
-      GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }} # scerets에서 구글 제이슨 값 변수(GOOGLE_SERVICES_JSON)로 설정
-      DEV_KEYSTORE_PROPERTIES: ${{ secrets.DEV_KEYSTORE_PROPERTIES }}
 
     steps:
     - uses: actions/checkout@v4
@@ -29,13 +23,13 @@ jobs:
       run: chmod +x gradlew
 
     - name: Create secure.properties
-      run: echo "$SECURE_PROPERTIES" | base64 --decode > /secure.properties
+      run: echo "${{ secrets.SECURE_PROPERTIES }}" | base64 --decode > secure.properties
       
     - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 app/dev_ksystore.jks로 저장한다. (생략 가능)
       run: echo "${{ secrets.DEV_KEYSTORE }}" | base64 --decode > ddd_beer_dev.keystore
           
     - name: Create google-services.json # 환경변수(GOOGLE_SERVICES_JSON) 값의 내용을 기반으로 `app/google-services.json`를 만든다.
-      run: echo "$GOOGLE_SERVICES_JSON" | base64 --decode > app/google-services.json
+      run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
         
     - name: Build with Gradle
       run: ./gradlew clean build
