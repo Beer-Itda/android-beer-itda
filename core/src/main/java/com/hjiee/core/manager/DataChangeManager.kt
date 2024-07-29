@@ -23,7 +23,7 @@ class DataChangeManager private constructor() {
                 Context.MODE_PRIVATE
             ).apply {
                 edit()?.run {
-                    Change.values().map {
+                    Change.entries.map {
                         remove(getKeyName(it)).apply()
                     }
                 }
@@ -60,7 +60,7 @@ class DataChangeManager private constructor() {
         }
 
         private fun getKeyName(type: Change): String {
-            return "${prefix}_${type.name.toLowerCase()}"
+            return "${prefix}_${type.name.lowercase()}"
         }
     }
 }

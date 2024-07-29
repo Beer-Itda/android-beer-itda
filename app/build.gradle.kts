@@ -51,6 +51,7 @@ android {
             isDebuggable = false
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
             multiDexEnabled = true
+            signingConfig = signingConfigs.getByName("develop")
         }
 
         getByName("debug") {
