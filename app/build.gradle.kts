@@ -55,7 +55,7 @@ android {
         }
 
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("develop")
+            signingConfig = signingConfigs.getByName("debug")
             multiDexEnabled = true
         }
     }
