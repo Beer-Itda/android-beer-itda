@@ -56,6 +56,7 @@ object Libs {
 //    const val SNAP_RECYCLERVIEW =
 //        "com.yarolegovich:discrete-scrollview:${Versions.SNAP_RECYCLERVIEW}"
     const val LOTTIE = "com.airbnb.android:lottie:${Versions.LOTTIE}"
+    const val MULTIDEX = "androidx.multidex:multidex:${Versions.MULTIDEX}"
 
 }
 

@@ -39,4 +39,5 @@ object Versions {
     //
     const val SNAP_RECYCLERVIEW = "1.5.1"
     const val LOTTIE = "3.7.0"
+    const val MULTIDEX = "2.0.1"
 }

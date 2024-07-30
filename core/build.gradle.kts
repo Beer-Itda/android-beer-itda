@@ -52,6 +52,7 @@ android {
 
 dependencies {
 
+    api(Libs.MULTIDEX)
     implementation(Libs.LIFECYCLE_VIEW_MODEL_KTX)
     implementation(Libs.LIFECYCLE_LIVE_DATA_KTX)
     implementation(Libs.LIFECYCLE_COMMON)
