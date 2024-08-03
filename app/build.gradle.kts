@@ -3,10 +3,10 @@ import PropertiesExt.ENABLE_AGGREGATING_TASK
 import PropertiesExt.KAKAO
 import PropertiesExt.getBaseUrl
 import PropertiesExt.getKakaoKey
-import PropertiesExt.getKeyAlias
-import PropertiesExt.getKeyPassword
-import PropertiesExt.getStoreFile
-import PropertiesExt.getStorePassword
+import com.android.build.api.dsl.ApkSigningConfig
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -24,11 +24,15 @@ android {
     buildToolsVersion = AndroidConfig.BUILD_TOOLS_VERSION
 
     signingConfigs {
-        create("develop") {
-            storeFile = getStoreFile()
-            storePassword = getStorePassword()
-            keyAlias = getKeyAlias()
-            keyPassword = getKeyPassword()
+        getByName("debug") {
+            val keystorePath = "keystore.properties"
+            val keystoreProperties = getFileProperties(keystorePath)
+            setSigningConfig(keystoreProperties)
+        }
+        create("release") {
+            val keystorePath = "release_keystore.properties"
+            val keystoreProperties = getFileProperties(keystorePath)
+            setSigningConfig(keystoreProperties)
         }
     }
 
@@ -46,17 +50,20 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        debug {
             isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("debug")
+            multiDexEnabled = true
+        }
+        release {
+            isMinifyEnabled = false
+            isShrinkResources = false
             isDebuggable = false
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
             multiDexEnabled = true
-            signingConfig = signingConfigs.getByName("debug")
-        }
-
-        getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
-            multiDexEnabled = true
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -116,4 +123,29 @@ dependencies {
     testImplementation(TestLibs.JUNIT)
     androidTestImplementation(TestLibs.ANDROID_X_JUNIT)
     androidTestImplementation(TestLibs.ESPRESSO_CORE)
+}
+
+fun getFileProperties(propertiesPath: String): Properties {
+    val fis = try {
+        FileInputStream(rootProject.file(propertiesPath))
+    } catch (e: FileNotFoundException) {
+        FileInputStream(rootProject.file("keystore.properties"))
+    }
+    val keystoreProperties = Properties()
+    keystoreProperties.load(fis)
+    return keystoreProperties
+}
+
+fun ApkSigningConfig.setSigningConfig(keystoreProperties: Properties) {
+    val storeFileKey = "develop_keystore"
+    val storePasswordKey = "develop_keystore_password"
+    val keyAliasKey = "develop_key_alias"
+    val keyPasswordKey = "develop_key_password"
+
+    if (keystoreProperties.getProperty(storeFileKey, "").isNotEmpty()) {
+        keyAlias = keystoreProperties.getProperty(keyAliasKey)
+        keyPassword = keystoreProperties.getProperty(keyPasswordKey)
+        storeFile = file(keystoreProperties.getProperty(storeFileKey))
+        storePassword = keystoreProperties.getProperty(storePasswordKey)
+    }
 }

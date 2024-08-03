@@ -1,21 +1,42 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.kts.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
-
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
-
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
-
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+-dontwarn com.hjiee.domain.entity.DomainEntity$Aroma
+-dontwarn com.hjiee.domain.entity.DomainEntity$Beer
+-dontwarn com.hjiee.domain.entity.DomainEntity$BeerDetail
+-dontwarn com.hjiee.domain.entity.DomainEntity$Level
+-dontwarn com.hjiee.domain.entity.DomainEntity$LevelGuide
+-dontwarn com.hjiee.domain.entity.DomainEntity$LoginInfo
+-dontwarn com.hjiee.domain.entity.DomainEntity$MyLevel
+-dontwarn com.hjiee.domain.entity.DomainEntity$MyReview
+-dontwarn com.hjiee.domain.entity.DomainEntity$Page
+-dontwarn com.hjiee.domain.entity.DomainEntity$PageResult
+-dontwarn com.hjiee.domain.entity.DomainEntity$Review
+-dontwarn com.hjiee.domain.entity.DomainEntity$StyleLargeCategory
+-dontwarn com.hjiee.domain.entity.DomainEntity$StyleMiddleCategory
+-dontwarn com.hjiee.domain.entity.DomainEntity$StyleSmallCategory
+-dontwarn com.hjiee.domain.entity.DomainEntity$User
+-dontwarn com.hjiee.domain.entity.request.RequestSelectedAroma
+-dontwarn com.hjiee.domain.entity.request.RequestSelectedStyle
+-dontwarn com.hjiee.domain.repository.BeerRepository
+-dontwarn com.hjiee.domain.repository.LoginRepository
+-dontwarn com.hjiee.domain.usecase.beer.GetAwardBeerUseCase
+-dontwarn com.hjiee.domain.usecase.beer.GetRandomRecommendUseCase
+-dontwarn com.hjiee.domain.usecase.beer.GetReviewUseCase
+-dontwarn com.hjiee.domain.usecase.beer.GetSelectedAromaBeerUseCase
+-dontwarn com.hjiee.domain.usecase.beer.GetSelectedStyleBeerUseCase
+-dontwarn com.hjiee.domain.usecase.beer.PostFavoriteUseCase
+-dontwarn com.hjiee.domain.usecase.beer.detail.GetBeerDetailUseCase
+-dontwarn com.hjiee.domain.usecase.filter.aroma.GetAromaUseCase
+-dontwarn com.hjiee.domain.usecase.filter.aroma.PostAromaUseCase
+-dontwarn com.hjiee.domain.usecase.filter.style.GetStyleUseCase
+-dontwarn com.hjiee.domain.usecase.filter.style.PostStyleUseCase
+-dontwarn com.hjiee.domain.usecase.login.AccountDeleteUseCase
+-dontwarn com.hjiee.domain.usecase.login.GetTokenUseCase
+-dontwarn com.hjiee.domain.usecase.login.LoginUseCase
+-dontwarn com.hjiee.domain.usecase.login.LogoutUseCase
+-dontwarn com.hjiee.domain.usecase.login.UserInfoUseCase
+-dontwarn com.hjiee.domain.usecase.mypage.MyFavoriteUseCase
+-dontwarn com.hjiee.domain.usecase.mypage.MyReviewUseCase
+-dontwarn com.hjiee.domain.usecase.mypage.NickNameChangeUseCase
+-dontwarn com.hjiee.domain.usecase.mypage.level.LevelGuideUseCase
+-dontwarn com.hjiee.domain.usecase.review.DeleteReviewUseCase
+-dontwarn com.hjiee.domain.usecase.review.PostReviewUseCase
+-dontwarn com.hjiee.domain.usecase.search.SearchUseCase
