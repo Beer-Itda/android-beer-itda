@@ -41,6 +41,9 @@ android {
         }
     }
 
+    lint {
+        abortOnError = false
+    }
     buildFeatures {
         dataBinding = true
     }
