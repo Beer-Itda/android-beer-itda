@@ -35,7 +35,7 @@ jobs:
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean assembleRelease
 
       - uses: 8398a7/action-slack@v3
         with:
