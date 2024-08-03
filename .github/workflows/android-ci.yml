@@ -52,10 +52,6 @@ jobs:
 #          files: |
 #            android/app/build/outputs/apk/release/app-release.apk
 
-
-      - name: upload release artifact to Firebase App Distribution
-        run: firebase appdistribution:distribute app/build/outputs/bundle/release/app-release.aab --token ${{secrets.FIREBASE_TOKEN}} --app ${{secrets.FIREBASE_APP_ID}} --groups "trusted-testers" --release-notes "Release server"
-
       - name: Upload artifact to Firebase App Distribution for apk
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
