@@ -41,9 +41,10 @@ jobs:
       - name: Upload Release Build to Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: release-artifacts
+          name: app-release.apk
           path: android/app/build/outputs/apk/release/
           if-no-files-found: error
+          overwrite: true
 
 #      - name: Create Github Release
 #        uses: softprops/action-gh-release@v1
