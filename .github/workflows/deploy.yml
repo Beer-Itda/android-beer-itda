@@ -1,4 +1,4 @@
-name: deploy
+name: 안드로이드 배포
 
 on:
   workflow_dispatch:
