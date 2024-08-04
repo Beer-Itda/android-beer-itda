@@ -26,7 +26,7 @@ jobs:
         run: echo "${{ secrets.SECURE_PROPERTIES }}" | base64 --decode > secure.properties
 
       - name: Create keystore.properties
-        run: echo "${{ secrets.RELEASE_KEYSTORE_PROPERTIES }}" | base64 --decode > keystore.properties
+        run: echo "${{ secrets.RELEASE_KEYSTORE_PROPERTIES }}" | base64 --decode > release_keystore.properties
 
       - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 app/dev_ksystore.jks로 저장한다. (생략 가능)
         run: echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > app/ddd_beer_release.keystore
@@ -46,6 +46,10 @@ jobs:
           name: android-artifact
           path: app/build/outputs/apk/release
           if-no-files-found: error
+
+      - name: List Contents
+        run: ls *
+        if: always()
 
 #      - name: Create Github Release
 #        uses: softprops/action-gh-release@v1
