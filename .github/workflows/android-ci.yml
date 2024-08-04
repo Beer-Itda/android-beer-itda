@@ -37,6 +37,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean assemblePlayStoreRelease
 
+      - name: List Contents
+        run: ls *
 
       - name: Upload Release Build to Artifacts
         uses: actions/upload-artifact@v4
