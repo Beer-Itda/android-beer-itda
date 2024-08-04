@@ -35,13 +35,13 @@ jobs:
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
       - name: List Contents
-        run: ls *
+        run: ls -l app/build/outputs/*
 
       - name: Build with Gradle
         run: ./gradlew clean assemblePlayStoreRelease
 
       - name: List Contents
-        run: ls *
+        run: ls -l app/build/outputs/*
 
       - name: Upload Release Build to Artifacts
         uses: actions/upload-artifact@v4
@@ -51,7 +51,7 @@ jobs:
           if-no-files-found: error
 
       - name: List Contents
-        run: ls *
+        run: ls -l app/build/outputs/*
 
 #      - name: Create Github Release
 #        uses: softprops/action-gh-release@v1
