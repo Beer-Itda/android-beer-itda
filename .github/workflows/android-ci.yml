@@ -25,14 +25,17 @@ jobs:
       - name: Create secure.properties
         run: echo "${{ secrets.SECURE_PROPERTIES }}" | base64 --decode > secure.properties
 
-      - name: Create keystore.properties
-        run: echo "${{ secrets.RELEASE_KEYSTORE_PROPERTIES }}" | base64 --decode > release_keystore.properties
+      - name: Create keystore properties
+        run: echo "${{ secrets.RELEASE_KEYSTORE_PROPERTIES }}" | base64 --decode > keystore.properties
 
       - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 app/dev_ksystore.jks로 저장한다. (생략 가능)
-        run: echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > app/ddd_beer_release.keystore
+        run: echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > app/beer.keystore
 
       - name: Create google-services.json # 환경변수(GOOGLE_SERVICES_JSON) 값의 내용을 기반으로 `app/google-services.json`를 만든다.
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+
+      - name: List Contents
+        run: ls *
 
       - name: Build with Gradle
         run: ./gradlew clean assemblePlayStoreRelease
@@ -49,7 +52,6 @@ jobs:
 
       - name: List Contents
         run: ls *
-        if: always()
 
 #      - name: Create Github Release
 #        uses: softprops/action-gh-release@v1

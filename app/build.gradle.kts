@@ -129,7 +129,7 @@ fun getFileProperties(propertiesPath: String): Properties {
     val fis = try {
         FileInputStream(rootProject.file(propertiesPath))
     } catch (e: FileNotFoundException) {
-        FileInputStream(rootProject.file("dev_keystore.properties"))
+        FileInputStream(rootProject.file("keystore.properties"))
     }
     val keystoreProperties = Properties()
     keystoreProperties.load(fis)
