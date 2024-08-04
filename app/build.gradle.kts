@@ -24,8 +24,8 @@ android {
     buildToolsVersion = AndroidConfig.BUILD_TOOLS_VERSION
 
     signingConfigs {
-        getByName("debug") {
-            val keystorePath = "keystore.properties"
+        create("dev") {
+            val keystorePath = "dev_keystore.properties"
             val keystoreProperties = getFileProperties(keystorePath)
             setSigningConfig(keystoreProperties)
         }
@@ -54,7 +54,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = false
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("dev")
             multiDexEnabled = true
         }
         release {
@@ -129,7 +129,7 @@ fun getFileProperties(propertiesPath: String): Properties {
     val fis = try {
         FileInputStream(rootProject.file(propertiesPath))
     } catch (e: FileNotFoundException) {
-        FileInputStream(rootProject.file("keystore.properties"))
+        FileInputStream(rootProject.file("dev_keystore.properties"))
     }
     val keystoreProperties = Properties()
     keystoreProperties.load(fis)
