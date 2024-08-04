@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android-artifact
-          path: android/app/build/outputs/apk/release
+          path: app/build/outputs/apk/release
           if-no-files-found: error
           overwrite: true
 
