@@ -41,7 +41,7 @@ jobs:
       - name: Upload Release Build to APK Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: android-artifact
+          name: android-beer-itda.apk
           path: app/build/outputs/apk/playStore/release
           if-no-files-found: error
 
@@ -52,7 +52,7 @@ jobs:
       - name: Upload Release Build to AAB Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: android-artifact
+          name: android-beer-itda.aab
           path: app/build/outputs/bundle/playStoreRelease
           if-no-files-found: error
 
