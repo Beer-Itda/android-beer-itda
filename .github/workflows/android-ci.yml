@@ -47,7 +47,7 @@ jobs:
 
       # aab
       - name: Build with Gradle
-        run: ./gradlew bundlePlayStoreRelease
+        run: ./gradlew clean bundlePlayStoreRelease
 
       - name: Upload Release Build to AAB Artifacts
         uses: actions/upload-artifact@v4
