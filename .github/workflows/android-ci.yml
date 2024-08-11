@@ -57,8 +57,9 @@ jobs:
           path: app/build/outputs/aab/playStore/release
           if-no-files-found: error
 
-      - name: List
+      - name: Directory List
         run: ls -R app/build/outputs
+        if: always()
 
 #      - name: Create Github Release
 #        uses: softprops/action-gh-release@v1
