@@ -47,17 +47,16 @@ jobs:
 
       # aab
       - name: Build with Gradle
-        run: ./gradlew clean bundlePlayStoreRelease
-
+        run: ./gradlew bundlePlayStoreRelease
 
       - name: Upload Release Build to AAB Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: android-artifact
-          path: app/build/outputs/aab/playStore/release
+          path: app/build/outputs/bundle/playStoreRelease
           if-no-files-found: error
 
-      - name: Directory List
+      - name: Print directory list
         run: ls -R app/build/outputs
         if: always()
 
