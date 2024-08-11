@@ -75,11 +75,11 @@ jobs:
 #          groups: tester
 #          file: android/app/build/outputs/apk/release/app-release.apk
 
-      - name: Upload artifact to Firebase App Distribution for aab
+      - name: Upload artifact to Firebase App Distribution for AAB
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CLI_KEY }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: tester
           file: android/app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
 
