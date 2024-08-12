@@ -47,7 +47,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     override fun initBind() {
         binding.apply {
             viewModel = loginViewModel
-            tvLogin.setOnDebounceClickListener { startLogin() }
+            version.text = versionManager.version
+            tvLogin.setOnDebounceClickListener {
+//                startLogin()
+            }
             with(tvLoginNotice) {
                 text = loginViewModel.noticeMessage
                 movementMethod = HyperLinkMovement()
@@ -78,6 +81,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 start<MainActivity>()
                 finish()
             }
+
             is ErrorActionEntity.ShowErrorMessage -> {
                 showToast(entity.message)
             }

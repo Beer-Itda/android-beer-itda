@@ -46,7 +46,6 @@ jobs:
           version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
           suffix_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f2)
           
-          git checkout -b release/${version_part}
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           

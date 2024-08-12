@@ -29,7 +29,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
             }
             if (viewModel.updateRequiredStatus.value == UpdateRequiredStatus.Recommend) {
                 setNegativeButton(getString(R.string.no_update)) { _, _ ->
-                    viewModel.autoLogin()
+//                    viewModel.autoLogin()
                 }
             }
         }.create()
@@ -38,11 +38,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initObserver()
+        start<LoginActivity>()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkForUpdate()
+//        viewModel.checkForUpdate()
     }
 
     override fun initObserver() {
