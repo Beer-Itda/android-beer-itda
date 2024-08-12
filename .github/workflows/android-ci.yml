@@ -61,7 +61,7 @@ jobs:
           # Update VERSION_NAME in Versions.kt
           sed -ie 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{inputs.release_version}}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
           
-          git commit -m "version change ${version_part}" -a
+          git commit -m "version change ${{inputs.release_version}}" -a
           git push --set-upstream origin release/${version_part}
 
       # apk
