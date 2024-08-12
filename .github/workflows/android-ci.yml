@@ -1,10 +1,16 @@
 name: Android CI
 
+#on:
+#  push:
+#    branches: [ "feature/*" ]
+#  pull_request:
+#    branches: [ "develop" ]
 on:
-  push:
-    branches: [ "feature/*" ]
-  pull_request:
-    branches: [ "develop" ]
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Version no of release'
+        required: true
 
 jobs:
   build:
@@ -56,9 +62,9 @@ jobs:
           path: app/build/outputs/bundle/playStoreRelease
           if-no-files-found: error
 
-      - name: Print directory list
-        run: ls -R app/build/outputs
-        if: always()
+#      - name: Print directory list
+#        run: ls -R app/build/outputs
+#        if: always()
 
 #      - name: Create Github Release
 #        uses: softprops/action-gh-release@v1
@@ -82,6 +88,16 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: tester
           file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
+
+      - name: Create Release Branch
+        run: |
+          git checkout -b release/${{inputs.release_version}}
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          sed -ie 's/versionName .*/versionName ${{inputs.release_version}}/' app/config.gradle         
+          git commit -m "Automated commit by GitHub Actions to update version name" -a
+          git push --set-upstream origin release/${{inputs.release_version}}
+      
 
       - uses: 8398a7/action-slack@v3
         with:
