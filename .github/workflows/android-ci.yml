@@ -46,6 +46,15 @@ jobs:
           version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
           suffix_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f2)
           
+          # Check if the branch exists
+          if git rev-parse --verify release/${version_part} >/dev/null 2>&1; then
+            echo "Branch release/${version_part} already exists. Switching to it."
+            git switch release/${version_part}
+          else
+            echo "Branch release/${version_part} does not exist. Creating and switching to it."
+            git checkout -b release/${version_part}
+          fi
+          
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
