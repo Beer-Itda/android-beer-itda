@@ -41,6 +41,21 @@ jobs:
       - name: Create google-services.json # 환경변수(GOOGLE_SERVICES_JSON) 값의 내용을 기반으로 `app/google-services.json`를 만든다.
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
+      - name: Create Release Branch
+        run: |
+          version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
+          suffix_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f2)
+          
+          git checkout -b release/${version_part}
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Update VERSION_NAME in Versions.kt
+          sed -ie 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{inputs.release_version}}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
+          
+          git commit -m "version change ${version_part}" -a
+          git push --set-upstream origin release/${version_part}
+
       # apk
       - name: Build with Gradle
         run: ./gradlew clean assemblePlayStoreRelease
@@ -89,23 +104,6 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: tester
           file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
-
-      - name: Create Release Branch
-        run: |
-          version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
-          suffix_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f2)
-          echo ${version_part}
-          
-          git checkout -b release/${version_part}
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          
-          # Update VERSION_NAME in Versions.kt
-          sed -ie 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{inputs.release_version}}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
-          
-          git commit -m "Automated commit by GitHub Actions to update version name" -a
-          git push --set-upstream origin release/${version_part}
-      
 
       - uses: 8398a7/action-slack@v3
         with:
