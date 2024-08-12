@@ -9,8 +9,12 @@ on:
   workflow_dispatch:
     inputs:
       release_version:
-        description: 'Version'
-        type: string
+        description: 'env'
+        type: choice
+        options:
+          - dev
+          - qa
+          - prod
         required: true
 
 jobs:
