@@ -10,6 +10,7 @@ on:
     inputs:
       release_version:
         description: 'Version no of release'
+        type: string
         required: true
 
 jobs:
