@@ -95,7 +95,7 @@ jobs:
           version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
           suffix_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f2)
           
-          git checkout -b release/${{inputs.version_part}}
+          git checkout -b release/${{version_part}}
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
@@ -103,7 +103,7 @@ jobs:
           sed -ie 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{inputs.release_version}}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
           
           git commit -m "Automated commit by GitHub Actions to update version name" -a
-          git push --set-upstream origin release/${{inputs.version_part}}
+          git push --set-upstream origin release/${{version_part}}
       
 
       - uses: 8398a7/action-slack@v3
