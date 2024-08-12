@@ -114,7 +114,7 @@ jobs:
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          groups: tester
+          groups: tester, android-tester
           file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
 
       - uses: 8398a7/action-slack@v3
