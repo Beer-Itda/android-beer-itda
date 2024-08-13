@@ -97,7 +97,7 @@ jobs:
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          groups: tester, android-tester
+          groups: android-testers
           file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
           debug: true
 
