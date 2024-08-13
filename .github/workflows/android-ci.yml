@@ -91,16 +91,15 @@ jobs:
         run: ls -R app/build/outputs
         if: always()
 
-
-      - name: Upload artifact to Firebase App Distribution for APK
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          groups: android-testers
-          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
-          debug: true
-
+#      - name: Upload artifact to Firebase App Distribution for APK
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1
+#        with:
+#          appId: ${{secrets.FIREBASE_APP_ID}}
+#          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+#          groups: android-testers
+#          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
+#          debug: true
+#
 
       # aab
       - name: Build with Gradle
@@ -137,7 +136,7 @@ jobs:
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          groups: tester, android-tester
+          groups: android-testers
           file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
 #          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
           debug: true
