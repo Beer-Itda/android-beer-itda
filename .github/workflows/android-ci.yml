@@ -8,7 +8,7 @@ name: Android CI
 on:
   workflow_dispatch:
     inputs:
-      release_version:
+      release_env:
         description: 'env'
         type: choice
         options:
@@ -16,6 +16,14 @@ on:
           - qa
           - prod
         required: true
+#      release_version:
+#        description: 'env'
+#        type: choice
+#        options:
+#          - dev
+#          - qa
+#          - prod
+#        required: true
 
 jobs:
   build:
@@ -79,6 +87,21 @@ jobs:
           path: app/build/outputs/apk/playStore/release
           if-no-files-found: error
 
+      - name: Print directory list
+        run: ls -R app/build/outputs
+        if: always()
+
+
+      - name: Upload artifact to Firebase App Distribution for APK
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          groups: tester, android-tester
+          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
+          debug: true
+
+
       # aab
       - name: Build with Gradle
         run: ./gradlew clean bundlePlayStoreRelease
@@ -90,9 +113,9 @@ jobs:
           path: app/build/outputs/bundle/playStoreRelease
           if-no-files-found: error
 
-#      - name: Print directory list
-#        run: ls -R app/build/outputs
-#        if: always()
+      - name: Print directory list
+        run: ls -R app/build/outputs
+        if: always()
 
 #      - name: Create Github Release
 #        uses: softprops/action-gh-release@v1
@@ -115,8 +138,8 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: tester, android-tester
-#          file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
-          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
+          file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
+#          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
           debug: true
 
       - uses: 8398a7/action-slack@v3
