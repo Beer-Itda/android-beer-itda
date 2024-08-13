@@ -135,7 +135,7 @@ jobs:
       - name: Find the commit where the VERSION variable last changed
         id: find_version_commit
         run: |
-          LAST_VERSION_COMMIT=$(git log -L :VERSION_NAME:AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
+          LAST_VERSION_COMMIT=$(git log -L :VERSION_NAME:buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
           echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
 
       - name: Extract changelog from commits since the last VERSION change
