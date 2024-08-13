@@ -44,8 +44,13 @@ android {
     lint {
         abortOnError = false
     }
-    buildFeatures {
-        dataBinding = true
+
+    viewBinding {
+        enable = true
+    }
+
+    dataBinding {
+        enable = true
     }
     namespace = "com.hjiee.core"
     hilt {

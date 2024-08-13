@@ -60,7 +60,7 @@ android {
         release {
             isMinifyEnabled = false
             isShrinkResources = false
-            isDebuggable = false
+            isDebuggable = true
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
             multiDexEnabled = true
             signingConfig = signingConfigs.getByName("release")
@@ -80,8 +80,12 @@ android {
         abortOnError = false
     }
 
-    buildFeatures {
-        dataBinding = true
+    viewBinding {
+        enable = true
+    }
+
+    dataBinding {
+        enable = true
     }
     flavorDimensions += listOf("mode")
 

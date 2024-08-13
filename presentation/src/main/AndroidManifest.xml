@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name="com.hjiee.presentation.ui.splash.view.SplashActivity"
+            android:name=".ui.login.view.LoginActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             tools:ignore="LockedOrientationActivity">
@@ -39,11 +39,11 @@
             tools:ignore="LockedOrientationActivity" />
 
 
-        <activity
-            android:name="com.hjiee.presentation.ui.login.view.LoginActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+<!--        <activity-->
+<!--            android:name="com.hjiee.presentation.ui.login.view.LoginActivity"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            tools:ignore="LockedOrientationActivity" />-->
 
         <activity
             android:name="com.hjiee.presentation.ui.main.mypage.nickname.view.NickNameChangeActivity"

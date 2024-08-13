@@ -29,7 +29,7 @@ class SplashViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     init {
-        firebaseConfigManager.fetchRemoteConfig()
+//        firebaseConfigManager.fetchRemoteConfig()
     }
 
     private val _updateRequiredStatus = MutableLiveData<UpdateRequiredStatus>()

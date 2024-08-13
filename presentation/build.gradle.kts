@@ -36,8 +36,12 @@ android {
         abortOnError = false
     }
 
-    buildFeatures {
-        dataBinding = true
+    viewBinding {
+        enable = true
+    }
+
+    dataBinding {
+        enable = true
     }
 
     flavorDimensions += listOf("mode")

@@ -38,7 +38,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initObserver()
-        start<LoginActivity>()
+//        start<LoginActivity>()
     }
 
     override fun onResume() {
