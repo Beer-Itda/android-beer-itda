@@ -132,11 +132,24 @@ jobs:
 #          file: android/app/build/outputs/apk/release/app-release.apk
 
 
-      - name: Find the commit where the VERSION variable last changed
+      - name: Find commits from last VERSION_NAME change to HEAD
         id: find_version_commit
         run: |
-          LAST_VERSION_COMMIT=$(git log -L :VERSION_NAME:buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
-          echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
+          LAST_VERSION_COMMIT=$(git log -S 'VERSION_NAME = ' -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
+          if [ -z "$LAST_VERSION_COMMIT" ]; then
+            echo "No previous VERSION_NAME change found, using all commits."
+            COMMIT_MESSAGES=$(git log --pretty=format:"%h - %s" --abbrev-commit)
+          else
+            echo "VERSION_NAME last changed in commit $LAST_VERSION_COMMIT."
+            COMMIT_MESSAGES=$(git log $LAST_VERSION_COMMIT..HEAD --pretty=format:"%h - %s" --abbrev-commit)
+          fi
+          echo "LAST_VERSION_COMMIT=$COMMIT_MESSAGES" >> $GITHUB_ENV
+
+#      - name: Find the commit where the VERSION variable last changed
+#        id: find_version_commit
+#        run: |
+#          LAST_VERSION_COMMIT=$(git log -L :VERSION_NAME:buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
+#          echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
 
       - name: Extract changelog from commits since the last VERSION change
         id: changelog
