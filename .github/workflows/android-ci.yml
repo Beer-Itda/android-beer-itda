@@ -135,7 +135,7 @@ jobs:
       - name: Find commits from last VERSION_NAME change to HEAD
         id: find_version_commit
         run: |
-          LAST_VERSION_COMMIT=$(git log -S 'VERSION_NAME = ' -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
+          LAST_VERSION_COMMIT=$(git log -G"VERSION_NAME = \"([0-9]+)\.([0-9]+)\.([0-9]+)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\"" -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
           if [ -z "$LAST_VERSION_COMMIT" ]; then
             echo "No previous VERSION_NAME change found, using all commits."
             COMMIT_MESSAGES=$(git log --pretty=format:"%h - %s" --abbrev-commit)
