@@ -1,21 +1,21 @@
 name: Android CI
 
-#on:
-#  push:
-#    branches: [ "feature/*" ]
+on:
+  push:
+    branches: [ "release/test" ]
 #  pull_request:
 #    branches: [ "develop" ]
-on:
-  workflow_dispatch:
-    inputs:
-      release_env:
-        description: 'env'
-        type: choice
-        options:
-          - dev
-          - qa
-          - prod
-        required: true
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      release_env:
+#        description: 'env'
+#        type: choice
+#        options:
+#          - dev
+#          - qa
+#          - prod
+#        required: true
 #      release_version:
 #        description: 'env'
 #        type: choice
@@ -38,157 +38,5 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Create secure.properties
-        run: echo "${{ secrets.SECURE_PROPERTIES }}" | base64 --decode > secure.properties
-
-      - name: Create keystore properties
-        run: echo "${{ secrets.RELEASE_KEYSTORE_PROPERTIES }}" | base64 --decode > keystore.properties
-
-      - name: Decode And Save Keystore Base64 # app.keystoer.jks 키 값을 디코드 해서 app/dev_ksystore.jks로 저장한다. (생략 가능)
-        run: echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > app/beer.keystore
-
-      - name: Create google-services.json # 환경변수(GOOGLE_SERVICES_JSON) 값의 내용을 기반으로 `app/google-services.json`를 만든다.
-        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-
-#      - name: Create Release Branch
-#        run: |
-#          version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
-#          suffix_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f2)
-#
-#          # Check if the branch exists
-#          if git rev-parse --verify release/${version_part} >/dev/null 2>&1; then
-#            echo "Branch release/${version_part} already exists. Switching to it."
-#            git switch release/${version_part}
-#          else
-#            echo "Branch release/${version_part} does not exist. Creating and switching to it."
-#            git checkout -b release/${version_part}
-#          fi
-#
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"
-#
-#          # Update VERSION_NAME in Versions.kt
-#          sed -ie 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{inputs.release_version}}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
-#
-#          git commit -m "version change ${{inputs.release_version}}" -a
-#          git push --set-upstream origin release/${version_part}
-
-      # apk
-      - name: Build with Gradle
-        run: ./gradlew clean assemblePlayStoreRelease
-
-      - name: Upload Release Build to APK Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-beer-itda.apk
-          path: app/build/outputs/apk/playStore/release
-          if-no-files-found: error
-
-      - name: Print directory list
-        run: ls -R app/build/outputs
-        if: always()
-
-#      - name: Upload artifact to Firebase App Distribution for APK
-#        uses: wzieba/Firebase-Distribution-Github-Action@v1
-#        with:
-#          appId: ${{secrets.FIREBASE_APP_ID}}
-#          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-#          groups: android-testers
-#          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
-#          debug: true
-#
-
-      # aab
-      - name: Build with Gradle
-        run: ./gradlew clean bundlePlayStoreRelease
-
-      - name: Upload Release Build to AAB Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-beer-itda.aab
-          path: app/build/outputs/bundle/playStoreRelease
-          if-no-files-found: error
-
-      - name: Print directory list
-        run: ls -R app/build/outputs
-        if: always()
-
-#      - name: Create Github Release
-#        uses: softprops/action-gh-release@v1
-#        with:
-#          generate_release_notes: true
-#          files: |
-#            android/app/build/outputs/apk/release/app-release.apk
-
-#      - name: Upload artifact to Firebase App Distribution for apk
-#        uses: wzieba/Firebase-Distribution-Github-Action@v1
-#        with:
-#          appId: ${{secrets.FIREBASE_APP_ID}}
-#          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CLI_KEY }}
-#          groups: tester
-#          file: android/app/build/outputs/apk/release/app-release.apk
-
-
-      - name: Find commits from last VERSION_NAME change to HEAD
-        id: find_version_commit
-        run: |
-          echo git log -G "VERSION_NAME = \"([0-9]+)\.([0-9]+)\.([0-9]+)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\"" -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}'
-          LAST_VERSION_COMMIT=$(git log -G "VERSION_NAME = \"([0-9]+)\.([0-9]+)\.([0-9]+)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\"" -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
-          if [ -z "$LAST_VERSION_COMMIT" ]; then
-            echo "No previous VERSION_NAME change found, using all commits."
-            COMMIT_MESSAGES=$(git log --pretty=format:"%s" --abbrev-commit)
-          else
-            echo "VERSION_NAME last changed in commit $LAST_VERSION_COMMIT."
-            COMMIT_MESSAGES=$(git log $LAST_VERSION_COMMIT..HEAD --pretty=format:"%s" --abbrev-commit)
-          fi
-          echo "LAST_VERSION_COMMIT=$COMMIT_MESSAGES" >> $GITHUB_ENV
-
-
-      - name: Extract changelog from commits since the last VERSION change
-        id: changelog
-        run: |
-          if [ -z "${{ env.LAST_VERSION_COMMIT }}" ]; then
-            echo "No previous VERSION change found, extracting all commits."
-            CHANGELOG=$(git log --pretty=format:"%h - %s" --abbrev-commit)
-          else
-            echo "Last VERSION change found at commit ${{ env.LAST_VERSION_COMMIT }}. Extracting commits since this change."
-            CHANGELOG=$(git log ${{ env.LAST_VERSION_COMMIT }}..HEAD --pretty=format:"%h - %s" --abbrev-commit)
-          fi
-          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
-          echo "$CHANGELOG" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-      - name: Generate release notes file
-        run: |
-          echo "${{ env.CHANGELOG }}" >> release_notes.txt
-
-      - name: Print directory list
-        run: ls -R
-        if: always()
-
-      - name: Upload artifact to Firebase App Distribution for AAB
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          groups: android-testers
-          file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
-          releaseNotes: ${{ env.CHANGELOG }}
-
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: custom
-          fields: workflow,job,commit,repo,ref,author,took
-          custom_payload: |
-            {
-              attachments: [{
-                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
-              }]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always() # Pick up events even if the job fails or is canceled.
+      - name: git log
+        run: echo git log -G "VERSION_NAME = \"([0-9]+)\.([0-9]+)\.([0-9]+)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\"" -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}'
