@@ -143,18 +143,13 @@ jobs:
             echo "VERSION_NAME last changed in commit $LAST_VERSION_COMMIT."
             COMMIT_MESSAGES=$(git log $LAST_VERSION_COMMIT..HEAD --pretty=format:"%h - %s" --abbrev-commit)
           fi
-          echo "LAST_VERSION_COMMIT=$COMMIT_MESSAGES" >> $GITHUB_ENV
-
-#      - name: Find the commit where the VERSION variable last changed
-#        id: find_version_commit
-#        run: |
-#          LAST_VERSION_COMMIT=$(git log -L :VERSION_NAME:buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
-#          echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
+          echo "::set-output name=last_version_commit::$LAST_VERSION_COMMIT"
+#          echo "LAST_VERSION_COMMIT=$COMMIT_MESSAGES" >> $GITHUB_ENV
 
       - name: Extract changelog from commits since the last VERSION change
         id: changelog
         run: |
-          if [ -z "${{ env.LAST_VERSION_COMMIT }}" ]; then
+          if [ -z "${{ steps.find_version_commit.outputs.last_version_commit }}" ]; then
           echo "No previous VERSION change found, extracting all commits."
           CHANGELOG=$(git log --pretty=format:"%h - %s" --abbrev-commit)
           else
