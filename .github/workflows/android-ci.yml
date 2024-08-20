@@ -37,6 +37,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          fetch-depth: 0
           cache: gradle
 
       - name: git branch
