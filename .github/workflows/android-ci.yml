@@ -42,6 +42,7 @@ jobs:
       - name: git branch
         run: git branch
 
+
       - name: git full log
         run: git log
 
