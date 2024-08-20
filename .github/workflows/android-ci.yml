@@ -41,6 +41,9 @@ jobs:
 
       - name: git branch
         run: git branch
-        
+
+      - name: git full log
+        run: git log
+
       - name: git log
         run: git log -G "VERSION_NAME = \"([0-9]+)\.([0-9]+)\.([0-9]+)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\"" -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}'
