@@ -140,7 +140,7 @@ jobs:
           else
             echo "VERSION_NAME last changed in commit $LAST_VERSION_COMMIT."
           fi
-            echo "$LAST_VERSION_COMMIT" >> $GITHUB_ENV
+            echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
 
 
       - name: Extract changelog from commits since the last VERSION change
