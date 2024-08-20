@@ -141,15 +141,13 @@ jobs:
             COMMIT_MESSAGES=$(git log --pretty=format:"%h - %s" --abbrev-commit)
           else
             echo "VERSION_NAME last changed in commit $LAST_VERSION_COMMIT."
-            COMMIT_MESSAGES=$(git log $LAST_VERSION_COMMIT..HEAD --pretty=format:"%h - %s" --abbrev-commit)
           fi
-          echo "::set-output name=last_version_commit::$LAST_VERSION_COMMIT"
-#          echo "LAST_VERSION_COMMIT=$COMMIT_MESSAGES" >> $GITHUB_ENV
+          echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
 
       - name: Extract changelog from commits since the last VERSION change
         id: changelog
         run: |
-          if [ -z "${{ steps.find_version_commit.outputs.last_version_commit }}" ]; then
+          if [ -z "${{ env.LAST_VERSION_COMMIT }}" ]; then
           echo "No previous VERSION change found, extracting all commits."
           CHANGELOG=$(git log --pretty=format:"%h - %s" --abbrev-commit)
           else
