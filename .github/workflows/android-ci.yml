@@ -144,9 +144,11 @@ jobs:
             COMMIT_MESSAGES=$(git log --pretty=format:"%s" --abbrev-commit)
           else
             echo "VERSION_NAME last changed in commit $LAST_VERSION_COMMIT."
-            COMMIT_MESSAGES=$(git log $LAST_VERSION_COMMIT..HEAD --pretty=format:"%s" --abbrev-commit)
+            COMMIT_MESSAGES=$(git log $LAST_VERSION_COMMIT..HEAD --pretty=format:"%s" --abbrev-commit | tr '\n' ' | ')
           fi
-            echo "LAST_VERSION_COMMIT=$COMMIT_MESSAGES" >> $GITHUB_ENV
+          # Save the last commit and commit messages as separate environment variables
+          echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGES=$COMMIT_MESSAGES" >> $GITHUB_ENV
 
 
       - name: Extract changelog from commits since the last VERSION change
