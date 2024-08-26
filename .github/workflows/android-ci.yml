@@ -86,6 +86,9 @@ jobs:
           path: app/build/outputs/apk/playStore/release
           if-no-files-found: error
 
+      - name: Check signed apk
+        run: apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
+
       - name: Print directory list
         run: ls -R app/build/outputs
         if: always()
@@ -103,6 +106,19 @@ jobs:
       # aab
       - name: Build with Gradle
         run: ./gradlew clean bundlePlayStoreRelease
+
+      - name: Check signed aab
+        run: jarsigner -verify -verbose -certs app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
+
+      - name: Sign AAB
+        id: sign
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/bundle/playStoreRelease
+          signingKeyBase64: ${{ secrets.RELEASE_KEYSTORE }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
 
       - name: Upload Release Build to AAB Artifacts
         uses: actions/upload-artifact@v4
