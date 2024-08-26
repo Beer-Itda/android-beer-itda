@@ -12,17 +12,13 @@ on:
         description: 'env'
         type: choice
         options:
-          - dev
           - qa
+          - dev
           - prod
         required: true
 #      release_version:
-#        description: 'env'
-#        type: choice
-#        options:
-#          - dev
-#          - qa
-#          - prod
+#        description: 'version'
+#        type: string
 #        required: true
 
 jobs:
@@ -114,6 +110,9 @@ jobs:
           name: android-beer-itda.aab
           path: app/build/outputs/bundle/playStoreRelease
           if-no-files-found: error
+
+      - name: Check signed aab
+        run: jarsigner -verify -verbose -certs app/build/outputs/bundle/playStoreRelease/android-beer-itda.aab.aab
 
       - name: Print directory list
         run: ls -R app/build/outputs
