@@ -112,7 +112,7 @@ jobs:
           if-no-files-found: error
 
       - name: Check signed aab
-        run: jarsigner -verify -verbose -certs app/build/outputs/bundle/playStoreRelease/android-beer-itda.aab.aab
+        run: jarsigner -verify -verbose -certs app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
 
       - name: Print directory list
         run: ls -R app/build/outputs
