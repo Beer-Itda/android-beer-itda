@@ -88,7 +88,7 @@ jobs:
 
       - name: Check signed apk
         run: |
-          BUILD_TOOLS_VERSION=$(grep -oP 'const val BUILD_TOOLS_VERSION = "\K[0-9.]+' app/buildSrc/src/main/kotlin/AndroidConfig.kt)
+          BUILD_TOOLS_VERSION=$(grep -oP 'const val BUILD_TOOLS_VERSION = "\K[0-9.]+' buildSrc/src/main/kotlin/AndroidConfig.kt)
           ${ANDROID_HOME}/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
 
       - name: Print directory list
