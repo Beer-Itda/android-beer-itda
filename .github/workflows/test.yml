@@ -19,7 +19,7 @@ jobs:
           fields: workflow,job,commit,repo,ref,author,took
           custom_payload: |
             {
-              title: "안드로이드 배포 봇"
+              title: "안드로이드 배포 봇",
               text: "Slack message text.",
               attachments: [{
                 color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
