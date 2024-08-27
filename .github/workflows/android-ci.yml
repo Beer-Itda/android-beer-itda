@@ -223,9 +223,9 @@ jobs:
 
       - uses: 8398a7/action-slack@v3
         with:
+          status: custom
           text: "Slack message text."
           fields: workflow,job,commit,repo,ref,author,took
-          mention: here, dev-android
           custom_payload: |
             {
               attachments: [{
