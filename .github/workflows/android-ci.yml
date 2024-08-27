@@ -79,10 +79,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean assemblePlayStoreRelease
 
-      - name: Check signed apk
+      - name: Build tools version
         run: |
           BUILD_TOOLS_VERSION=$(grep -oP 'const val BUILD_TOOLS_VERSION = "\K[0-9.]+' buildSrc/src/main/kotlin/AndroidConfig.kt)
-          ${ANDROID_HOME}/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
+          echo "BUILD_TOOLS_VERSION=BUILD_TOOLS_VERSION" >> $GITHUB_ENV
+
+      - name: Check signed apk
+        run: |
+          ${ANDROID_HOME}/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
 
       - name: Sign APK
         id: sign-apk
@@ -94,12 +98,11 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: $BUILD_TOOLS_VERSION
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOLS_VERSION }}
 
       - name: Check signed apk
         run: |
-          BUILD_TOOLS_VERSION=$(grep -oP 'const val BUILD_TOOLS_VERSION = "\K[0-9.]+' buildSrc/src/main/kotlin/AndroidConfig.kt)
-          ${ANDROID_HOME}/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
+          ${ANDROID_HOME}/build-tools/${{ env.BUILD_TOOLS_VERSION }}/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
 
       - name: Upload Release Build to APK Artifacts
         uses: actions/upload-artifact@v4
