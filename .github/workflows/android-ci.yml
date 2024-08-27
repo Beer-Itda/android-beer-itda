@@ -84,11 +84,11 @@ jobs:
           BUILD_TOOLS_VERSION=$(grep -oP 'const val BUILD_TOOLS_VERSION = "\K[0-9.]+' buildSrc/src/main/kotlin/AndroidConfig.kt)
           ${ANDROID_HOME}/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
 
-      - name: Sign AAB
+      - name: Sign APK
         id: sign
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/playStoreRelease
+          releaseDirectory: app/build/outputs/apk/playStore/release
           signingKeyBase64: ${{ secrets.RELEASE_KEYSTORE }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
