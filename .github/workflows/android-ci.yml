@@ -219,7 +219,7 @@ jobs:
 
       - name: Update VERSION_NAME
         run: |
-          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ inputs.release_version }}"/' app/buildSrc/src/main/kotlin/AndroidConfig.kt
+          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ inputs.release_version }}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
 
       - name: Commit changes
         run: |
