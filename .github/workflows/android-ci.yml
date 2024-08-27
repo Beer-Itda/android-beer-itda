@@ -221,6 +221,10 @@ jobs:
           file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
           releaseNotes: ${{ env.CHANGELOG }}
 
+      - name: Prepare changelog for Slack
+        id: prepare_changelog
+        run: echo "SLACK_CHANGELOG=$(echo '${{ env.CHANGELOG }}' | jq -R .)" >> $GITHUB_ENV
+
       - uses: 8398a7/action-slack@v3
         if: success()
         with:
@@ -245,7 +249,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*작업내용*\n${{ env.CHANGELOG }}"
+                    "text": "*작업내용*\n${{ env.SLACK_CHANGELOG }}"
                   },
                   "accessory": {
                     "type": "image",
