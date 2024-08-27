@@ -21,7 +21,6 @@ jobs:
             {
               title: "안드로이드 배포 봇",
               text: "Slack message text.",
-            {
               "blocks": [
                 {
                   "type": "section",
