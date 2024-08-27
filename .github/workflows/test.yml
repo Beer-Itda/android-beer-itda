@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: 8398a7/action-slack@v3
         with:
-          status: success
+          status: failure
           icon_url: 'https://source.android.com/static/docs/setup/images/Android_symbol_green_RGB.png?hl=ko'
           fields: workflow,job,commit,repo,ref,author,took
           custom_payload: |
