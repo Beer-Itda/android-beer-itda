@@ -222,21 +222,44 @@ jobs:
           releaseNotes: ${{ env.CHANGELOG }}
 
       - uses: 8398a7/action-slack@v3
+        if: success()
         with:
           status: custom
-          text: "Slack message text."
+          icon_url: 'https://source.android.com/static/docs/setup/images/Android_symbol_green_RGB.png?hl=ko'
           fields: workflow,job,commit,repo,ref,author,took
           custom_payload: |
             {
-              attachments: [{
-                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
-              }]
+              title: "안드로이드 배포 봇",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "<@ULF2E19T3>\n*안녕하세요 :smile:*\n안드로이드 <https://console.firebase.google.com/project/beer-432f8/appdistribution/app/android:com.ddd4.synesthesia.beer/releases|*2.1.0-alpha01*>버전이 배포되었습니다. \n\n *감사합니다*"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*작업내용*\n:star::star::star::star: 1528 reviews\n 이런작업들 진행중"
+                  },
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/c7ed05m9lC2EmA3Aruue7A/o.jpg",
+                    "alt_text": "alt text for image"
+                  }
+                },
+                {
+                  "type": "divider"
+                }
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always() # Pick up events even if the job fails or is canceled.
-
 
   update-version:
     needs: [build]
