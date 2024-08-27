@@ -85,7 +85,7 @@ jobs:
           ${ANDROID_HOME}/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
 
       - name: Sign APK
-        id: sign
+        id: sign apk
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/apk/playStore/release
@@ -128,7 +128,7 @@ jobs:
         run: jarsigner -verify -verbose -certs app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
 
       - name: Sign AAB
-        id: sign
+        id: sign aab
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/bundle/playStoreRelease
