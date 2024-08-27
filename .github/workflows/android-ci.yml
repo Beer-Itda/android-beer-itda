@@ -93,6 +93,13 @@ jobs:
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: $BUILD_TOOLS_VERSION
+
+      - name: Check signed apk
+        run: |
+          BUILD_TOOLS_VERSION=$(grep -oP 'const val BUILD_TOOLS_VERSION = "\K[0-9.]+' buildSrc/src/main/kotlin/AndroidConfig.kt)
+          ${ANDROID_HOME}/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
 
       - name: Upload Release Build to APK Artifacts
         uses: actions/upload-artifact@v4
@@ -100,11 +107,6 @@ jobs:
           name: android-beer-itda.apk
           path: app/build/outputs/apk/playStore/release
           if-no-files-found: error
-
-      - name: Check signed apk
-        run: |
-          BUILD_TOOLS_VERSION=$(grep -oP 'const val BUILD_TOOLS_VERSION = "\K[0-9.]+' buildSrc/src/main/kotlin/AndroidConfig.kt)
-          ${ANDROID_HOME}/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/playStore/release/app-playStore-release.apk
 
       - name: Print directory list
         run: ls -R app/build/outputs
@@ -137,15 +139,15 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Check signed aab
+        run: jarsigner -verify -verbose -certs app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
+
       - name: Upload Release Build to AAB Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: android-beer-itda.aab
           path: app/build/outputs/bundle/playStoreRelease
           if-no-files-found: error
-
-      - name: Check signed aab
-        run: jarsigner -verify -verbose -certs app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
 
       - name: Print directory list
         run: ls -R app/build/outputs
