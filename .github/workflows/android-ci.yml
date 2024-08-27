@@ -16,10 +16,10 @@ on:
           - dev
           - prod
         required: true
-#      release_version:
-#        description: 'version'
-#        type: string
-#        required: true
+      release_version:
+        description: 'version'
+        type: string
+        required: true
 
 jobs:
   build:
@@ -233,3 +233,26 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always() # Pick up events even if the job fails or is canceled.
+
+
+  update-version:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@hjiee.github.com"
+
+      - name: Update VERSION_NAME
+        run: |
+          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ github.event.inputs.new_version_name }}"/' app/buildSrc/src/main/kotlin/AndroidConfig.kt
+
+      - name: Commit changes
+        run: |
+          git add app/buildSrc/src/main/kotlin/AndroidConfig.kt
+          git commit -m "Update VERSION_NAME to ${{ github.event.inputs.new_version_name }}"
+          git push
