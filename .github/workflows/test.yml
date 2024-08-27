@@ -12,9 +12,6 @@ jobs:
       - uses: 8398a7/action-slack@v3
         with:
           status: custom
-          channel: '#develop'
-          mention: 'ULF2E19T3'
-          if_mention: 'success'
           icon_url: 'https://source.android.com/static/docs/setup/images/Android_symbol_green_RGB.png?hl=ko'
           fields: workflow,job,commit,repo,ref,author,took
           custom_payload: |
@@ -26,7 +23,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Hello, Assistant to the Regional Manager Dwight! *Michael Scott* wants to know where you'd like to take the Paper Company investors to dinner tonight.\n\n *Please select a restaurant:*"
+                    "text": "<@ULF2E19T3>\n*안녕하세요 :smile:*\n안드로이드 <https://console.firebase.google.com/project/beer-432f8/appdistribution/app/android:com.ddd4.synesthesia.beer/releases|*2.1.0-alpha01*>버전이 배포되었습니다. \n\n *감사합니다*"
                   }
                 },
                 {
@@ -45,37 +42,9 @@ jobs:
                   }
                 },
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Kin Khao*\n:star::star::star::star: 1638 reviews\n The sticky rice also goes wonderfully with the caramelized pork belly, which is absolutely melt-in-your-mouth and so soft."
-                  },
-                  "accessory": {
-                    "type": "image",
-                    "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/korel-1YjNtFtJlMTaC26A/o.jpg",
-                    "alt_text": "alt text for image"
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Ler Ros*\n:star::star::star::star: 2082 reviews\n I would really recommend the  Yum Koh Moo Yang - Spicy lime dressing and roasted quick marinated pork shoulder, basil leaves, chili & rice powder."
-                  },
-                  "accessory": {
-                    "type": "image",
-                    "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/DawwNigKJ2ckPeDeDM7jAg/o.jpg",
-                    "alt_text": "alt text for image"
-                  }
-                },
-                {
                   "type": "divider"
                 }
-              ],
-              attachments: [{
-                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
-              }]
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
