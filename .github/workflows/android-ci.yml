@@ -212,6 +212,21 @@ jobs:
         run: ls -R
         if: always()
 
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@hjiee.github.com"
+
+      - name: Update VERSION_NAME
+        run: |
+          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ inputs.release_version }}"/' app/buildSrc/src/main/kotlin/AndroidConfig.kt
+
+      - name: Commit changes
+        run: |
+          git add buildSrc/src/main/kotlin/AndroidConfig.kt
+          git commit -m "Update VERSION_NAME to ${{ inputs.release_version }}"
+          git push
+
       - name: Upload artifact to Firebase App Distribution for AAB
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -260,25 +275,3 @@ jobs:
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-  update-version:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@hjiee.github.com"
-
-      - name: Update VERSION_NAME
-        run: |
-          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ inputs.release_version }}"/' app/buildSrc/src/main/kotlin/AndroidConfig.kt
-
-      - name: Commit changes
-        run: |
-          git add buildSrc/src/main/kotlin/AndroidConfig.kt
-          git commit -m "Update VERSION_NAME to ${{ inputs.release_version }}"
-          git push
