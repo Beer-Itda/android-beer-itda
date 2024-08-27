@@ -21,7 +21,7 @@ on:
         type: string
         required: true
 
-run-name: ${{ github.event.inputs.new_version_name }}
+run-name: ${{ github.event.inputs.release_version }}
 
 jobs:
   build:
@@ -252,10 +252,10 @@ jobs:
 
       - name: Update VERSION_NAME
         run: |
-          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ github.event.inputs.new_version_name }}"/' app/buildSrc/src/main/kotlin/AndroidConfig.kt
+          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ github.event.inputs.release_version }}"/' app/buildSrc/src/main/kotlin/AndroidConfig.kt
 
       - name: Commit changes
         run: |
           git add buildSrc/src/main/kotlin/AndroidConfig.kt
-          git commit -m "Update VERSION_NAME to ${{ github.event.inputs.new_version_name }}"
+          git commit -m "Update VERSION_NAME to ${{ github.event.inputs.release_version }}"
           git push
