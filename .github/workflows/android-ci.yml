@@ -21,6 +21,8 @@ on:
         type: string
         required: true
 
+run-name: ${{ github.event.inputs.new_version_name }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -221,8 +223,9 @@ jobs:
 
       - uses: 8398a7/action-slack@v3
         with:
-          status: custom
+          text: "Slack message text."
           fields: workflow,job,commit,repo,ref,author,took
+          mention: here, dev-android
           custom_payload: |
             {
               attachments: [{
@@ -253,6 +256,6 @@ jobs:
 
       - name: Commit changes
         run: |
-          git add app/buildSrc/src/main/kotlin/AndroidConfig.kt
+          git add buildSrc/src/main/kotlin/AndroidConfig.kt
           git commit -m "Update VERSION_NAME to ${{ github.event.inputs.new_version_name }}"
           git push
