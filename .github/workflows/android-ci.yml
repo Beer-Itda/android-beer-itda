@@ -245,7 +245,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*작업내용*\n:star::star::star::star: 1528 reviews\n 이런작업들 진행중"
+                    "text": "*작업내용*\n${{ env.CHANGELOG }}"
                   },
                   "accessory": {
                     "type": "image",
