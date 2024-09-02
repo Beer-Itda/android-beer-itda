@@ -273,7 +273,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*작업내용*\n ${{ env.CHANGELOG }}"
+                    "text": "*작업내용*\n ${{ env.COMMIT_MESSAGES }}"
                   },
                   "accessory": {
                     "type": "image",
