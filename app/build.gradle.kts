@@ -53,14 +53,14 @@ android {
         debug {
             isMinifyEnabled = false
             isShrinkResources = false
-            isDebuggable = false
+            isDebuggable = true
             signingConfig = signingConfigs.getByName("dev")
             multiDexEnabled = true
         }
         release {
             isMinifyEnabled = false
             isShrinkResources = false
-            isDebuggable = true
+            isDebuggable = false
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
             multiDexEnabled = true
             signingConfig = signingConfigs.getByName("release")
