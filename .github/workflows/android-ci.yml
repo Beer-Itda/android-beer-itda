@@ -257,7 +257,7 @@ jobs:
 
       - name: Create service_account.json
         id: createServiceAccount
-        if: ${{ inputs.release_env }} == "prod"
+        if: ${{ inputs.release_env }} == 'prod'
         run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' | base64 --decode > service_account.json
 
       - name: Deploy to Play Store (BETA)
