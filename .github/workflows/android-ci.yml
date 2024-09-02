@@ -21,7 +21,7 @@ on:
         type: string
         required: true
 
-run-name: ${{ inputs.release_version }}
+run-name: ${{ inputs.release_env }} - ${{ inputs.release_version }}
 
 jobs:
   build:
