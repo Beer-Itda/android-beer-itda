@@ -236,18 +236,18 @@ jobs:
           releaseNotes: ${{ env.CHANGELOG }}
 
 
-#      - name: Create service_account.json
-#        id: createServiceAccount
-#        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
-#
-#      - name: Deploy to Play Store (BETA)
-#        id: deploy
-#        uses: r0adkll/upload-google-play@v1.0.15
-#        with:
-#          serviceAccountJson: service_account.json
-#          packageName: com.ddd4.synesthesia.beer
-#          track: beta
-#          releaseFiles: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
+      - name: Create service_account.json
+        id: createServiceAccount
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      - name: Deploy to Play Store (BETA)
+        id: deploy
+        uses: r0adkll/upload-google-play@v1.0.15
+        with:
+          serviceAccountJson: service_account.json
+          packageName: com.ddd4.synesthesia.beer
+          track: beta
+          releaseFiles: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
 
       - uses: 8398a7/action-slack@v3
         if: success()
