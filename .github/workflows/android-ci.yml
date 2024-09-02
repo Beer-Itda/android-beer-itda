@@ -1,4 +1,4 @@
-name: Firebase Deploy
+name: Android Deploy
 
 #on:
 #  push:
@@ -53,6 +53,37 @@ jobs:
 
       - name: Create google-services.json # 환경변수(GOOGLE_SERVICES_JSON) 값의 내용을 기반으로 `app/google-services.json`를 만든다.
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+
+
+      - name: Find commits from last VERSION_NAME change to HEAD
+        id: find_version_commit
+        run: |
+          LAST_VERSION_COMMIT=$(git log -G "VERSION_NAME = \"([0-9]+)\.([0-9]+)\.([0-9]+)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\"" -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
+          if [ -z "$LAST_VERSION_COMMIT" ]; then
+            echo "No previous VERSION_NAME change found, using all commits."
+            COMMIT_MESSAGES=$(git log --pretty=format:"%s" --abbrev-commit)
+          else
+            echo "VERSION_NAME last changed in commit $LAST_VERSION_COMMIT."
+            COMMIT_MESSAGES=$(git log $LAST_VERSION_COMMIT..HEAD --pretty=format:"%s" --abbrev-commit | tr '\n' ' | ')
+          fi
+          # Save the last commit and commit messages as separate environment variables
+          echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGES=$COMMIT_MESSAGES" >> $GITHUB_ENV
+
+
+      - name: Extract changelog from commits since the last VERSION change
+        id: changelog
+        run: |
+          if [ -z "${{ env.LAST_VERSION_COMMIT }}" ]; then
+            echo "No previous VERSION change found, extracting all commits."
+            CHANGELOG=$(git log --pretty=format:"%h - %s" --abbrev-commit)
+          else
+            echo "Last VERSION change found at commit ${{ env.LAST_VERSION_COMMIT }}. Extracting commits since this change."
+            CHANGELOG=$(git log ${{ env.LAST_VERSION_COMMIT }}..HEAD --pretty=format:"%s" --abbrev-commit)
+          fi
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Set up Git
         run: |
@@ -186,37 +217,6 @@ jobs:
 #          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CLI_KEY }}
 #          groups: tester
 #          file: android/app/build/outputs/apk/release/app-release.apk
-
-
-      - name: Find commits from last VERSION_NAME change to HEAD
-        id: find_version_commit
-        run: |
-          LAST_VERSION_COMMIT=$(git log -G "VERSION_NAME = \"([0-9]+)\.([0-9]+)\.([0-9]+)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\"" -- buildSrc/src/main/kotlin/AndroidConfig.kt | grep '^commit' | head -n 1 | awk '{print $2}')
-          if [ -z "$LAST_VERSION_COMMIT" ]; then
-            echo "No previous VERSION_NAME change found, using all commits."
-            COMMIT_MESSAGES=$(git log --pretty=format:"%s" --abbrev-commit)
-          else
-            echo "VERSION_NAME last changed in commit $LAST_VERSION_COMMIT."
-            COMMIT_MESSAGES=$(git log $LAST_VERSION_COMMIT..HEAD --pretty=format:"%s" --abbrev-commit | tr '\n' ' | ')
-          fi
-          # Save the last commit and commit messages as separate environment variables
-          echo "LAST_VERSION_COMMIT=$LAST_VERSION_COMMIT" >> $GITHUB_ENV
-          echo "COMMIT_MESSAGES=$COMMIT_MESSAGES" >> $GITHUB_ENV
-
-
-      - name: Extract changelog from commits since the last VERSION change
-        id: changelog
-        run: |
-          if [ -z "${{ env.LAST_VERSION_COMMIT }}" ]; then
-            echo "No previous VERSION change found, extracting all commits."
-            CHANGELOG=$(git log --pretty=format:"%h - %s" --abbrev-commit)
-          else
-            echo "Last VERSION change found at commit ${{ env.LAST_VERSION_COMMIT }}. Extracting commits since this change."
-            CHANGELOG=$(git log ${{ env.LAST_VERSION_COMMIT }}..HEAD --pretty=format:"%s" --abbrev-commit)
-          fi
-          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
-          echo "$CHANGELOG" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
 
       - name: Generate release notes file
         run: |
