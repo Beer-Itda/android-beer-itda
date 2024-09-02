@@ -56,8 +56,6 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@hjiee.github.com"
 
       - name: Update VERSION_NAME
         run: |
@@ -65,9 +63,11 @@ jobs:
 
       - name: Commit changes
         run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@hjiee.github.com"
+
           git add .
-          git commit -m "version change ${{ inputs.release_version }}"
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "version change ${{ inputs.release_version }}" && git push)
 #      - name: Create Release Branch
 #        run: |
 #          version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
