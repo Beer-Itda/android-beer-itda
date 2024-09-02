@@ -235,6 +235,20 @@ jobs:
           file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
           releaseNotes: ${{ env.CHANGELOG }}
 
+
+#      - name: Create service_account.json
+#        id: createServiceAccount
+#        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+#
+#      - name: Deploy to Play Store (BETA)
+#        id: deploy
+#        uses: r0adkll/upload-google-play@v1.0.15
+#        with:
+#          serviceAccountJson: service_account.json
+#          packageName: com.ddd4.synesthesia.beer
+#          track: beta
+#          releaseFiles: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
+
       - uses: 8398a7/action-slack@v3
         if: success()
         with:
@@ -243,7 +257,7 @@ jobs:
           fields: workflow,job,commit,repo,ref,author,took
           custom_payload: |
             {
-              title: "안드로이드 배포 봇",
+              "title": "안드로이드 배포 봇",
               "blocks": [
                 {
                   "type": "section",
