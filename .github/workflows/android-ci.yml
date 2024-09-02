@@ -90,7 +90,26 @@ jobs:
 
       - name: Update VERSION_NAME
         run: |
-          sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{ inputs.release_version }}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
+          if [ "$release_env" = "production" ]; then
+            # production 환경일 경우 alpha 태그를 제거합니다
+            version=$(echo $release_version | sed 's/-alpha[0-9]*//')
+          else
+            # qa 또는 dev 환경일 경우 원래 버전을 그대로 사용합니다
+            version=$release_version
+          fi
+          
+          # 변경사항이 있는지 확인합니다
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+            # 변경사항이 있으면 커밋하고 푸시합니다
+            git commit -m "version change $version"
+            git push
+          
+            # production 환경이 아닐 경우에만 태그를 생성합니다
+            if [ "$release_env" != "production" ]; then
+              git tag -a "v$version" -m "Release $version"
+              git push origin "v$version"
+            fi
+          fi
 
       - name: Commit changes
         run: |
@@ -99,28 +118,29 @@ jobs:
 
           git add .
           git diff --quiet && git diff --staged --quiet || (git commit -m "version change ${{ inputs.release_version }}" && git push)
-#      - name: Create Release Branch
-#        run: |
-#          version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
-#          suffix_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f2)
-#
-#          # Check if the branch exists
-#          if git rev-parse --verify release/${version_part} >/dev/null 2>&1; then
-#            echo "Branch release/${version_part} already exists. Switching to it."
-#            git switch release/${version_part}
-#          else
-#            echo "Branch release/${version_part} does not exist. Creating and switching to it."
-#            git checkout -b release/${version_part}
-#          fi
-#
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"
-#
-#          # Update VERSION_NAME in Versions.kt
-#          sed -ie 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{inputs.release_version}}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
-#
-#          git commit -m "version change ${{inputs.release_version}}" -a
-#          git push --set-upstream origin release/${version_part}
+
+      #      - name: Create Release Branch
+      #        run: |
+      #          version_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f1)
+      #          suffix_part=$(echo "${{inputs.release_version}}" | cut -d'-' -f2)
+      #
+      #          # Check if the branch exists
+      #          if git rev-parse --verify release/${version_part} >/dev/null 2>&1; then
+      #            echo "Branch release/${version_part} already exists. Switching to it."
+      #            git switch release/${version_part}
+      #          else
+      #            echo "Branch release/${version_part} does not exist. Creating and switching to it."
+      #            git checkout -b release/${version_part}
+      #          fi
+      #
+      #          git config --local user.email "action@github.com"
+      #          git config --local user.name "GitHub Action"
+      #
+      #          # Update VERSION_NAME in Versions.kt
+      #          sed -ie 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "${{inputs.release_version}}"/' buildSrc/src/main/kotlin/AndroidConfig.kt
+      #
+      #          git commit -m "version change ${{inputs.release_version}}" -a
+      #          git push --set-upstream origin release/${version_part}
 
       # apk
       - name: Build with Gradle
@@ -162,15 +182,15 @@ jobs:
         run: ls -R app/build/outputs
         if: always()
 
-#      - name: Upload artifact to Firebase App Distribution for APK
-#        uses: wzieba/Firebase-Distribution-Github-Action@v1
-#        with:
-#          appId: ${{secrets.FIREBASE_APP_ID}}
-#          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-#          groups: android-testers
-#          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
-#          debug: true
-#
+      #      - name: Upload artifact to Firebase App Distribution for APK
+      #        uses: wzieba/Firebase-Distribution-Github-Action@v1
+      #        with:
+      #          appId: ${{secrets.FIREBASE_APP_ID}}
+      #          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+      #          groups: android-testers
+      #          file: app/build/outputs/apk/playStore/release/app-playStore-release.apk
+      #          debug: true
+      #
 
       # aab
       - name: Build with Gradle
@@ -203,20 +223,20 @@ jobs:
         run: ls -R app/build/outputs
         if: always()
 
-#      - name: Create Github Release
-#        uses: softprops/action-gh-release@v1
-#        with:
-#          generate_release_notes: true
-#          files: |
-#            android/app/build/outputs/apk/release/app-release.apk
+      #      - name: Create Github Release
+      #        uses: softprops/action-gh-release@v1
+      #        with:
+      #          generate_release_notes: true
+      #          files: |
+      #            android/app/build/outputs/apk/release/app-release.apk
 
-#      - name: Upload artifact to Firebase App Distribution for apk
-#        uses: wzieba/Firebase-Distribution-Github-Action@v1
-#        with:
-#          appId: ${{secrets.FIREBASE_APP_ID}}
-#          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CLI_KEY }}
-#          groups: tester
-#          file: android/app/build/outputs/apk/release/app-release.apk
+      #      - name: Upload artifact to Firebase App Distribution for apk
+      #        uses: wzieba/Firebase-Distribution-Github-Action@v1
+      #        with:
+      #          appId: ${{secrets.FIREBASE_APP_ID}}
+      #          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CLI_KEY }}
+      #          groups: tester
+      #          file: android/app/build/outputs/apk/release/app-release.apk
 
       - name: Generate release notes file
         run: |
@@ -235,14 +255,15 @@ jobs:
           file: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
           releaseNotes: ${{ env.CHANGELOG }}
 
-
       - name: Create service_account.json
         id: createServiceAccount
-        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+        if: ${{ inputs.release_env }} == "prod"
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' | base64 --decode > service_account.json
 
       - name: Deploy to Play Store (BETA)
         id: deploy
         uses: r0adkll/upload-google-play@v1.0.15
+        if: ${{ inputs.release_env }} == "prod"
         with:
           serviceAccountJson: service_account.json
           packageName: com.ddd4.synesthesia.beer
