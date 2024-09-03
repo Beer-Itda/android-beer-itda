@@ -101,8 +101,8 @@ jobs:
               version="${{ inputs.release_version }}"
             fi
           
-            sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = $version/' buildSrc/src/main/kotlin/AndroidConfig.kt
-          
+            sed -i "s/const val VERSION_NAME = \".*\"/const val VERSION_NAME = \"$version\"/" buildSrc/src/main/kotlin/AndroidConfig.kt
+
             # 변경사항이 있는지 확인합니다
             if ! git diff --quiet || ! git diff --staged --quiet; then
               # 변경사항이 있으면 커밋하고 푸시합니다
