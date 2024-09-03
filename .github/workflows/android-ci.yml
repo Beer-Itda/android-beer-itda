@@ -93,7 +93,7 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@hjiee.github.com"
 
-          if [ ${{ inputs.release_env }} = 'prod' ]; then
+          if [ ${{ inputs.release_env }} == 'prod' ]; then
             # production 환경일 경우 alpha 태그를 제거합니다
             version=$(echo $release_version | sed 's/-alpha[0-9]*//')
           else
