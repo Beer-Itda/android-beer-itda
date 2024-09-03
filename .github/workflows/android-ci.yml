@@ -100,19 +100,15 @@ jobs:
               # qa 또는 dev 환경일 경우 원래 버전을 그대로 사용합니다
               version="${{ inputs.release_version }}"
             fi
-            echo "$version"
-            # 변경사항이 있는지 확인합니다
-            if git diff --quiet || git diff --staged --quiet; then
-              # 변경사항이 있으면 커밋하고 푸시합니다
-              git add .
-              git commit -m "change version name $version"
-              git push
           
-              # production 환경인 경우에만 태그를 생성합니다
-              if [ "${{ inputs.release_env }}" = "prod" ]; then
-               git tag -a "v$version" -m "Release $version"
-               git push origin "v$version"
-              fi
+            git add .
+            git commit -m "change version name $version"
+            git push
+        
+            # production 환경인 경우에만 태그를 생성합니다
+            if [ "${{ inputs.release_env }}" = "prod" ]; then
+              git tag -a "v$version" -m "Release $version"
+              git push origin "v$version"
             fi
 
       #      - name: Create Release Branch
