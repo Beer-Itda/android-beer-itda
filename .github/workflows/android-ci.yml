@@ -101,7 +101,6 @@ jobs:
               version="${{ inputs.release_version }}"
             fi
           
-#            sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = $version/' buildSrc/src/main/kotlin/AndroidConfig.kt
             sed -i "s/const val VERSION_NAME = ".*"/const val VERSION_NAME = \"$version\"/" buildSrc/src/main/kotlin/AndroidConfig.kt
             grep "VERSION_NAME" buildSrc/src/main/kotlin/AndroidConfig.kt
             
