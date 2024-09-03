@@ -263,7 +263,7 @@ jobs:
         with:
           serviceAccountJson: service_account.json
           packageName: com.ddd4.synesthesia.beer
-          track: beta
+          track: Alpha
           releaseFiles: app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
 
       - uses: 8398a7/action-slack@v3
