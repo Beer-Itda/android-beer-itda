@@ -93,16 +93,16 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@hjiee.github.com"
 
-          if [ "${{ inputs.release_env }}" = 'prod' ]; then
+          if [ ${{ inputs.release_env }} = 'prod' ]; then
             # production 환경일 경우 alpha 태그를 제거합니다
             version=$(echo $release_version | sed 's/-alpha[0-9]*//')
           else
             # qa 또는 dev 환경일 경우 원래 버전을 그대로 사용합니다
             version=$release_version
           fi
-          echo $version
+          echo "$version"
           # 변경사항이 있는지 확인합니다
-          if !git diff --quiet || !git diff --staged --quiet; then
+          if ! git diff --quiet || ! git diff --staged --quiet; then
             # 변경사항이 있으면 커밋하고 푸시합니다
             git add .
             git commit -m "change version name $version"
