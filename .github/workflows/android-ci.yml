@@ -92,8 +92,8 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@hjiee.github.com"
-
-          if [ ${{ inputs.release_env }} == 'prod' ]; then
+          echo "${{ inputs.release_version }}"
+          if [ '${{ inputs.release_env }}' == 'prod' ]; then
             # production 환경일 경우 alpha 태그를 제거합니다
             version=$(echo $release_version | sed 's/-alpha[0-9]*//')
           else
@@ -109,7 +109,7 @@ jobs:
             git push
           
             # production 환경인 경우에만 태그를 생성합니다
-            if [ ${{ inputs.release_env}} == 'prod' ]; then
+            if [ '${{ inputs.release_env}}' == 'prod' ]; then
               git tag -a "v$version"
               git push origin "v$version"
             fi
