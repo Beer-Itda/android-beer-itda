@@ -102,7 +102,7 @@ jobs:
           fi
           
           # 변경사항이 있는지 확인합니다
-          if ! git diff --quiet || ! git diff --staged --quiet; then
+          if git diff --quiet || git diff --staged --quiet; then
             # 변경사항이 있으면 커밋하고 푸시합니다
             git add .
             git commit -m "change version name $version"
