@@ -101,14 +101,20 @@ jobs:
               version="${{ inputs.release_version }}"
             fi
           
-            git add .
-            git commit -m "change version name $version"
-            git push
-        
-            # production 환경인 경우에만 태그를 생성합니다
-            if [ "${{ inputs.release_env }}" = "prod" ]; then
-              git tag -a "v$version" -m "Release $version"
-              git push origin "v$version"
+            sed -i 's/const val VERSION_NAME = ".*"/const val VERSION_NAME = "$version"/' buildSrc/src/main/kotlin/AndroidConfig.kt
+          
+            # 변경사항이 있는지 확인합니다
+            if ! git diff --quiet || ! git diff --staged --quiet; then
+              # 변경사항이 있으면 커밋하고 푸시합니다
+              git add .
+              git commit -m "change version name $version"
+              git push
+          
+              # production 환경인 경우에만 태그를 생성합니다
+              if [ "${{ inputs.release_env }}" = "prod" ]; then
+               git tag -a "v$version" -m "Release $version"
+               git push origin "v$version"
+              fi
             fi
 
       #      - name: Create Release Branch
