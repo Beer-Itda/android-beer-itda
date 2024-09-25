@@ -150,11 +150,7 @@ jobs:
 
       - name: Build APK
         if: matrix.build-type == 'apk'
-        run: |
-          chmod +x ./scripts/setup_build_apk.sh
-          ./scripts/setup_build_apk.sh
-        env:
-          BUILD_ENV: ${{ inputs.release_environment }}
+        run: ./gradlew clean assemblePlayStoreRelease
 
 #      - name: Build tools version
 #        run: |
@@ -186,13 +182,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android-beer-itda.apk
-          path: |
-            app/build/outputs/apk/playStore/release
-            if [ "${{ inputs.release_environment }} == "prod" ]; then
-               app/build/outputs/apk/playStore/release
-             else
-               app/build/outputs/apk/playStore/dev
-             fi
+          path: app/build/outputs/apk/playStore/release
           if-no-files-found: error
 
 
@@ -213,15 +203,6 @@ jobs:
       # aab
       - name: Build with Gradle
         run: ./gradlew clean bundlePlayStoreRelease
-
-
-      - name: Build AAB
-        if: matrix.build-type == 'aab'
-        run: |
-          chmod +x ./scripts/setup_build_aab.sh
-          ./scripts/setup_build_aab.sh
-        env:
-          BUILD_ENV: ${{ inputs.release_environment }}
 
 #      - name: Check signed aab
 #        run: jarsigner -verify -verbose -certs app/build/outputs/bundle/playStoreRelease/app-playStore-release.aab
@@ -244,13 +225,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android-beer-itda.aab
-          path: |
-            app/build/outputs/bundle/playStoreRelease
-            if [ "${{ inputs.release_environment }} == "prod" ]; then
-              app/build/outputs/bundle/playStoreRelease
-            else
-              app/build/outputs/bundle/playStoreDev
-            fi
+          path: app/build/outputs/bundle/playStoreRelease
           if-no-files-found: error
 
       - name: Print directory list
